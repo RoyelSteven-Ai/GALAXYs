@@ -1,50 +1,61 @@
-name: Code coverage
-
+name: Simple benchmarks
 on:
   push:
     branches:
       - main
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./safetensors  # 确保你要运行的代码在这个目录下
+permissions:
+  deployments: write  # 用于部署 GitHub Pages 网站
+  contents: write     # 更新 gh-pages 分支中的基准内容
 
+jobs:
+  benchmark:
+    name: Performance regression check
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Install Rust Stable
+      - name: Install Rust
         uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
-          components: llvm-tools-preview
-          override: true
+          components: rustfmt, clippy
 
-      - name: Set up cache for Rust dependencies
-        uses: Swatinem/rust-cache@v2
-
-      - name: Install cargo-llvm-cov for Ubuntu
-        run: cargo install cargo-llvm-cov
-
-      - name: Upgrade pip and install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install 'numpy<2'  # 降级 numpy 版本到小于 2，解决兼容性问题
-          pip install -r requirements.txt  # 安装其他依赖项
-
-      - name: Generate Coverage report
-        run: cargo llvm-cov --release --lcov --output-path lcov.info
-
-      - name: Upload coverage to codecov.io
-        uses: codecov/codecov-action@v3
+      - name: Install Python
+        uses: actions/setup-python@v2
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}  # 在 GitHub Secrets 中添加正确的 Codecov token
-          files: ./safetensors/lcov.info       # lcov.info 文件路径
-          fail_ci_if_error: true
-          verbose: true
+          python-version: "3.10"
+          architecture: "x64"
 
-      - name: Display the generated lcov file (for debug)
-        run: cat ./safetensors/lcov.info       # 输出生成的 lcov.info 文件内容以便于调试
+      - name: Install Dependencies
+        working-directory: ./bindings/python  # 请确认这是 requirements.txt 所在的路径
+        run: |
+          if [ ! -f "requirements.txt" ]; then
+            echo "requirements.txt does not exist. Please check the path."
+            exit 1
+          fi
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run tests
+        working-directory: ./bindings/python
+        run: |
+          cargo test
+          pytest --benchmark-json output.json benches/
+
+      - name: Download previous benchmark data
+        uses: actions/cache@v2
+        with:
+          path: ./cache
+          key: ${{ runner.os }}-benchmark
+
+      - name: Store benchmark result
+        uses: benchmark-action/github-action-benchmark@v1
+        with:
+          tool: 'pytest'
+          output-file-path: ./bindings/python/output.json
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          auto-push: true
+          comment-on-alert: true
+          alert-comment-cc-users: '@Narsil'
