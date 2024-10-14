@@ -3,42 +3,42 @@ name: Code coverage
 on:
   push:
     branches:
-      - main
+      - main  # 当推送到 main 分支时触发
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # 使用最新的 Ubuntu 作为运行环境
     defaults:
       run:
-        working-directory: ./safetensors  # 确保你要运行的代码在这个目录下
+        working-directory: ./safetensors  # 指定要运行代码的工作目录，请根据你的项目结构调整
 
     steps:
-      - name: Checkout repository
+      - name: Checkout repository  # 检出仓库代码
         uses: actions/checkout@v3
 
-      - name: Install Rust Stable
+      - name: Install Rust Stable  # 安装 Rust 的稳定版本
         uses: actions-rs/toolchain@v1
         with:
-          toolchain: stable
-          components: llvm-tools-preview
+          toolchain: stable  # 使用稳定版本
+          components: llvm-tools-preview  # 安装 llvm-tools-preview 组件
           override: true
 
-      - name: Set up cache for Rust dependencies
+      - name: Set up cache for Rust dependencies  # 设置 Rust 依赖的缓存，加速后续任务
         uses: Swatinem/rust-cache@v2
 
-      - name: Install cargo-llvm-cov for Ubuntu
+      - name: Install cargo-llvm-cov for Ubuntu  # 安装 cargo-llvm-cov 工具，用于生成代码覆盖率报告
         run: cargo install cargo-llvm-cov
 
-      - name: Generate Coverage report
+      - name: Generate Coverage report  # 生成代码覆盖率报告
         run: cargo llvm-cov --release --lcov --output-path lcov.info
 
-      - name: Upload coverage to codecov.io
+      - name: Upload coverage to codecov.io  # 上传代码覆盖率报告到 codecov.io
         uses: codecov/codecov-action@v3
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}  # 请确保在 GitHub Secrets 中添加了正确的 Codecov token
-          files: ./safetensors/lcov.info       # lcov.info 文件路径
-          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}  # 确保在 GitHub Secrets 中添加了正确的 Codecov token
+          files: ./safetensors/lcov.info       # lcov.info 文件的路径
+          fail_ci_if_error: true               # 如果上传失败，标记 CI 失败
           verbose: true
 
-      - name: Display the generated lcov file (for debug)
-        run: cat ./safetensors/lcov.info       # 输出生成的 lcov.info 文件内容以便于调试
+      - name: Display the generated lcov file (for debug)  # 输出生成的 lcov.info 文件内容，便于调试
+        run: cat ./safetensors/lcov.info
