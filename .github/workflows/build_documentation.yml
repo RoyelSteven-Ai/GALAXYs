@@ -1,4 +1,7 @@
-name: Build documentation
+- name: Checkout repository
+  uses: actions/checkout@v4
+  with:
+    token: ${{ secrets.GITHUB_TOKEN }}
 
 on:
   push:
