@@ -1,61 +1,50 @@
-name: Simple benchmarks
+name: Code coverage
+
 on:
   push:
     branches:
       - main
 
-permissions:
-  # deployments permission to deploy GitHub pages website
-  deployments: write
-  # contents permission to update benchmark contents in gh-pages branch
-  contents: write
-
 jobs:
-  benchmark:
-    name: Performance regression check
+  build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./safetensors  # 确保你要运行的代码在这个目录下
+
     steps:
-      - uses: actions/checkout@v3
-      - name: Install Rust
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Rust Stable
         uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
-          components: rustfmt, clippy
+          components: llvm-tools-preview
+          override: true
 
-      - name: Install Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: "3.10"
-          architecture: "x64"
+      - name: Set up cache for Rust dependencies
+        uses: Swatinem/rust-cache@v2
 
-      - name: Install
-        working-directory: ./bindings/python
+      - name: Install Python dependencies
         run: |
-          pip install -U pip
-          pip install .[dev]
+          python -m pip install --upgrade pip
+          pip install numpy<2  # 降级 numpy 版本到小于 2，解决兼容性问题
+          pip install -r requirements.txt  # 安装其他依赖项
 
-      - name: Run tests
-        working-directory: ./bindings/python
-        run: |
-          cargo test
-          pytest --benchmark-json output.json benches/
-      # Download previous benchmark result from cache (if exists)
-      - name: Download previous benchmark data
-        uses: actions/cache@v1
+      - name: Install cargo-llvm-cov for Ubuntu
+        run: cargo install cargo-llvm-cov
+
+      - name: Generate Coverage report
+        run: cargo llvm-cov --release --lcov --output-path lcov.info
+
+      - name: Upload coverage to codecov.io
+        uses: codecov/codecov-action@v3
         with:
-          path: ./cache
-          key: ${{ runner.os }}-benchmark
-      # Run `github-action-benchmark` action
-      - name: Store benchmark result
-        uses: benchmark-action/github-action-benchmark@v1
-        with:
-          # What benchmark tool the output.txt came from
-          tool: 'pytest'
-          # Where the output from the benchmark tool is stored
-          output-file-path: ./bindings/python/output.json
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          # Push and deploy GitHub pages branch automatically
-          auto-push: true
-          comment-on-alert: true
-          # Mention @rhysd in the commit comment
-          alert-comment-cc-users: '@Narsil'
+          token: ${{ secrets.CODECOV_TOKEN }}  # 请确保在 GitHub Secrets 中添加了正确的 Codecov token
+          files: ./safetensors/lcov.info       # lcov.info 文件路径
+          fail_ci_if_error: true
+          verbose: true
+
+      - name: Display the generated lcov file (for debug)
+        run: cat ./safetensors/lcov.info       # 输出生成的 lcov.info 文件内容以便于调试
