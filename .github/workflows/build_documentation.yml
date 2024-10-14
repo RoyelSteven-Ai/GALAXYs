@@ -1,7 +1,4 @@
-- name: Checkout repository
-  uses: actions/checkout@v4
-  with:
-    token: ${{ secrets.GITHUB_TOKEN }}
+name: Build documentation
 
 on:
   push:
@@ -22,3 +19,8 @@ jobs:
       version_tag_suffix: bindings/python/py_src/
       install_rust: true
       custom_container: huggingface/transformers-doc-builder
+    secrets:
+      token: ${{ secrets.HUGGINGFACE_PUSH }}
+      hf_token: ${{ secrets.HF_DOC_BUILD_PUSH }}
+
+e/transformers-doc-builder
