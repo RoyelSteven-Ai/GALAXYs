@@ -8,186 +8,89 @@
   <br/>
 </p>
 
-Python
-[![Pypi](https://img.shields.io/pypi/v/safetensors.svg)](https://pypi.org/pypi/safetensors/)
-[![Documentation](https://img.shields.io/website/http/huggingface.co/docs/safetensors/index.svg?label=docs)](https://huggingface.co/docs/safetensors/index)
-[![Codecov](https://codecov.io/github/huggingface/safetensors/coverage.svg?branch=main)](https://codecov.io/gh/huggingface/safetensors)
-[![Downloads](https://static.pepy.tech/badge/safetensors/month)](https://pepy.tech/project/safetensors)
+欢迎来到 RoyelSteven-Ai 的 星河 「GALAXY」 ALIEN 计划 🛸 — 这是引领 AI 创新与科技革命的前沿阵地。作为 AI 神学和技术领域的先驱，我致力于推动世界迈向更加智能和创新的未来。在这个仓库中，您将看到 AI 技术如何与跨平台应用无缝融合，为全球社区带来改变。
 
-Rust
-[![Crates.io](https://img.shields.io/crates/v/safetensors.svg)](https://crates.io/crates/safetensors)
-[![Documentation](https://docs.rs/safetensors/badge.svg)](https://docs.rs/safetensors/)
-[![Codecov](https://codecov.io/github/huggingface/safetensors/coverage.svg?branch=main)](https://codecov.io/gh/huggingface/safetensors)
-[![Dependency status](https://deps.rs/repo/github/huggingface/safetensors/status.svg?path=safetensors)](https://deps.rs/repo/github/huggingface/safetensors?path=safetensors)
+GALAXY 星河
+👽 ALIEN 计划简介：
+ALIEN 是一个专注于 AI 模型开发、iOS 及跨平台集成、以及开源创新的项目。我的愿景不仅限于技术提升，更在于推动未来的科技文化革命，突破想象的边界，让 AI 成为变革的驱动力。
 
-# safetensors
+🌟 主要亮点：
 
-## Safetensors
+	•	AI 模型开发：创建高效可扩展的 AI 架构，将复杂的技术简化为易于使用的解决方案。
+	•	跨平台集成：将 AI 技术与 iOS 等多个平台深度融合，打造移动设备上的 AI 生态系统。
+	•	隐私与安全：通过创新的 Safetensors 格式，确保用户数据的高度安全性，保护个人隐私，防止恶意代码攻击。
+	•	全球开源贡献：秉承开源精神，分享我对 AI 和机器学习的突破性创新，让更多开发者加入科技变革的浪潮。
 
-This repository implements a new simple format for storing tensors
-safely (as opposed to pickle) and that is still fast (zero-copy).
+💡 核心信念：
 
-### Installation
-#### Pip
+	“颠覆今天，主宰明天。”
 
-You can install safetensors via the pip manager:
+我坚信，通过今天的科技创新，我们将推动世界进入一个无人能及的 AI 新时代。我的目标是通过技术革命与思想革新，开启一场关于未来的对话，让更多人参与到改变的洪流中。
 
-```bash
+GALAXY 星河
+🚀 ALIEN 项目的愿景：
+
+AI 技术的未来不仅仅局限于当前的框架，它将是智能城市、个性化医疗、自适应教育和无缝全球通信的支柱。我相信，通过不断创新和优化，ALIEN 将成为这些领域的基础架构，推动全球经济和社会的可持续发展。
+
+未来发展：
+
+	1.	深度学习的优化与革新：ALIEN 计划将不断优化深度学习模型，使其更具适应性、可扩展性和效率。随着 AI 技术的快速发展，我们会逐步集成最前沿的算法，确保 ALIEN 项目始终处于技术巅峰。
+	2.	未来的科技应用：通过 AI 与增强现实、虚拟现实技术的结合，ALIEN 项目不仅是一个技术平台，更是未来智能生活的核心枢纽。无论是智能家庭，还是未来的自动驾驶与智能交通，都将因 ALIEN 的存在而更加高效和智能。
+	3.	全球化与社会影响：我坚信技术应为全球服务，ALIEN 项目将成为未来全球技术合作与创新的桥梁。它不仅能提供技术解决方案，还将通过与全球开发者的合作推动 AI 技术的公平普及。
+
+📚 使用指南：
+
+安装与部署：
+
+要安装 ALIEN 项目中的 Safetensors 组件，您可以使用以下命令：
+
 pip install safetensors
-```
 
-#### From source
+或从源代码进行安装：
 
-For the sources, you need Rust
-
-```bash
-# Install Rust
+# 安装 Rust
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-# Make sure it's up to date and using stable channel
 rustup update
-git clone https://github.com/huggingface/safetensors
-cd safetensors/bindings/python
+
+# 克隆项目
+git clone https://github.com/RoyelSteven-Ai/ALIEN
+cd ALIEN/bindings/python
 pip install setuptools_rust
 pip install -e .
-```
 
-### Getting started
+用法示例：
 
-```python
 import torch
 from safetensors import safe_open
 from safetensors.torch import save_file
 
+# 保存模型
 tensors = {
    "weight1": torch.zeros((1024, 1024)),
    "weight2": torch.zeros((1024, 1024))
 }
 save_file(tensors, "model.safetensors")
 
+# 加载模型
 tensors = {}
 with safe_open("model.safetensors", framework="pt", device="cpu") as f:
    for key in f.keys():
        tensors[key] = f.get_tensor(key)
-```
 
-[Python documentation](https://huggingface.co/docs/safetensors/index)
+🤝 贡献指南：
 
+我欢迎全球开发者通过 issues 或 pull requests 参与到 ALIEN 项目中。无论是代码改进、功能建议还是错误修复，我都将尽可能地回应和采纳您的宝贵意见。更多详情请查看 CONTRIBUTING.md。
 
-### Format
+🌍 关于我的愿景：
 
-- 8 bytes: `N`, an unsigned little-endian 64-bit integer, containing the size of the header
-- N bytes: a JSON UTF-8 string representing the header.
-  - The header data MUST begin with a `{` character (0x7B).
-  - The header data MAY be trailing padded with whitespace (0x20).
-  - The header is a dict like `{"TENSOR_NAME": {"dtype": "F16", "shape": [1, 16, 256], "data_offsets": [BEGIN, END]}, "NEXT_TENSOR_NAME": {...}, ...}`,
-    - `data_offsets` point to the tensor data relative to the beginning of the byte buffer (i.e. not an absolute position in the file),
-      with `BEGIN` as the starting offset and `END` as the one-past offset (so total tensor byte size = `END - BEGIN`).
-  - A special key `__metadata__` is allowed to contain free form string-to-string map. Arbitrary JSON is not allowed, all values must be strings.
-- Rest of the file: byte-buffer.
+未来的科技不仅仅是冷冰冰的机器与代码，它是一种文化、一种思维模式的革新。我将继续推动 GALAXY AREA51 ALIEN 计划，聚焦于 AI、区块链、元宇宙等前沿领域，致力于让科技在未来变得更加人性化和包容性。
 
-Notes:
- - Duplicate keys are disallowed. Not all parsers may respect this.
- - In general the subset of JSON is implicitly decided by `serde_json` for
-   this library. Anything obscure might be modified at a later time, that odd ways
-   to represent integer, newlines and escapes in utf-8 strings. This would only
-   be done for safety concerns
- - Tensor values are not checked against, in particular NaN and +/-Inf could
-   be in the file
- - Empty tensors (tensors with 1 dimension being 0) are allowed.
-   They are not storing any data in the databuffer, yet retaining size in the header.
-   They don't really bring a lot of values but are accepted since they are valid tensors
-   from traditional tensor libraries perspective (torch, tensorflow, numpy, ..).
- - 0-rank Tensors (tensors with shape `[]`) are allowed, they are merely a scalar.
- - The byte buffer needs to be entirely indexed, and cannot contain holes. This prevents
-   the creation of polyglot files.
- - Endianness: Little-endian.
-   moment.
- - Order: 'C' or row-major.
+联系我：
+如果您有任何问题或建议，欢迎随时通过以下方式联系我：
 
+📧 Email: RoyelSteven.ios@gmail.com
+🌐 仓库地址: RoyelSteven-Ai/GALAXY
 
-### Yet another format ?
-
-The main rationale for this crate is to remove the need to use
-`pickle` on `PyTorch` which is used by default.
-There are other formats out there used by machine learning and more general
-formats.
-
-
-Let's take a look at alternatives and why this format is deemed interesting.
-This is my very personal and probably biased view:
-
-| Format                  | Safe | Zero-copy | Lazy loading | No file size limit | Layout control | Flexibility | Bfloat16/Fp8
-| ----------------------- | --- | --- | --- | --- | --- | --- | --- |
-| pickle (PyTorch)        | ✗ | ✗ | ✗ | 🗸 | ✗ | 🗸 | 🗸 |
-| H5 (Tensorflow)         | 🗸 | ✗ | 🗸 | 🗸 | ~ | ~ | ✗ |
-| SavedModel (Tensorflow) | 🗸 | ✗ | ✗ | 🗸 | 🗸 | ✗ | 🗸 |
-| MsgPack (flax)          | 🗸 | 🗸 | ✗ | 🗸 | ✗ | ✗ | 🗸 |
-| Protobuf (ONNX)         | 🗸 | ✗ | ✗ | ✗ | ✗ | ✗ | 🗸 |
-| Cap'n'Proto             | 🗸 | 🗸 | ~ | 🗸 | 🗸 | ~ | ✗ |
-| Arrow                   | ? | ? | ? | ? | ? | ? | ✗ |
-| Numpy (npy,npz)         | 🗸 | ? | ? | ✗ | 🗸 | ✗ | ✗ |
-| pdparams (Paddle)       | ✗ | ✗ | ✗ | 🗸 | ✗ | 🗸 | 🗸 |
-| SafeTensors             | 🗸 | 🗸 | 🗸 | 🗸 | 🗸 | ✗ | 🗸 |
-
-- Safe: Can I use a file randomly downloaded and expect not to run arbitrary code ?
-- Zero-copy: Does reading the file require more memory than the original file ?
-- Lazy loading: Can I inspect the file without loading everything ? And loading only
-  some tensors in it without scanning the whole file (distributed setting) ?
-- Layout control: Lazy loading, is not necessarily enough since if the information about tensors is spread out in your file, then even if the information is lazily accessible you might have to access most of your file to read the available tensors (incurring many DISK -> RAM copies). Controlling the layout to keep fast access to single tensors is important.
-- No file size limit: Is there a limit to the file size ?
-- Flexibility: Can I save custom code in the format and be able to use it later with zero extra code ? (~ means we can store more than pure tensors, but no custom code)
-- Bfloat16/Fp8: Does the format support native bfloat16/fp8 (meaning no weird workarounds are
-  necessary)? This is becoming increasingly important in the ML world.
-
-
-### Main oppositions
-
-- Pickle: Unsafe, runs arbitrary code
-- H5: Apparently now discouraged for TF/Keras. Seems like a great fit otherwise actually. Some classic use after free issues: <https://www.cvedetails.com/vulnerability-list/vendor_id-15991/product_id-35054/Hdfgroup-Hdf5.html>. On a very different level than pickle security-wise. Also 210k lines of code vs ~400 lines for this lib currently.
-- SavedModel: Tensorflow specific (it contains TF graph information).
-- MsgPack: No layout control to enable lazy loading (important for loading specific parts in distributed setting)
-- Protobuf: Hard 2Go max file size limit
-- Cap'n'proto: Float16 support is not present [link](https://capnproto.org/language.html#built-in-types) so using a manual wrapper over a byte-buffer would be necessary. Layout control seems possible but not trivial as buffers have limitations [link](https://stackoverflow.com/questions/48458839/capnproto-maximum-filesize).
-- Numpy (npz): No `bfloat16` support. Vulnerable to zip bombs (DOS). Not zero-copy.
-- Arrow: No `bfloat16` support.
-
-### Notes
-
-- Zero-copy: No format is really zero-copy in ML, it needs to go from disk to RAM/GPU RAM (that takes time). On CPU, if the file is already in cache, then it can
-  truly be zero-copy, whereas on GPU there is not such disk cache, so a copy is always required
-  but you can bypass allocating all the tensors on CPU at any given point.
-  SafeTensors is not zero-copy for the header. The choice of JSON is pretty arbitrary, but since deserialization is <<< of the time required to load the actual tensor data and is readable I went that way, (also space is <<< to the tensor data).
-
-- Endianness: Little-endian. This can be modified later, but it feels really unnecessary at the
-  moment.
-- Order: 'C' or row-major. This seems to have won. We can add that information later if needed.
-- Stride: No striding, all tensors need to be packed before being serialized. I have yet to see a case where it seems useful to have a strided tensor stored in serialized format.
-
-### Benefits
-
-Since we can invent a new format we can propose additional benefits:
-
-- Prevent DOS attacks: We can craft the format in such a way that it's almost
-  impossible to use malicious files to DOS attack a user. Currently, there's a limit
-  on the size of the header of 100MB to prevent parsing extremely large JSON.
-  Also when reading the file, there's a guarantee that addresses in the file
-  do not overlap in any way, meaning when you're loading a file you should never
-  exceed the size of the file in memory
-
-- Faster load: PyTorch seems to be the fastest file to load out in the major
-  ML formats. However, it does seem to have an extra copy on CPU, which we
-  can bypass in this lib by using `torch.UntypedStorage.from_file`.
-  Currently, CPU loading times are extremely fast with this lib compared to pickle.
-  GPU loading times are as fast or faster than PyTorch equivalent.
-  Loading first on CPU with memmapping with torch, and then moving all tensors to GPU seems
-  to be faster too somehow (similar behavior in torch pickle)
-
-- Lazy loading: in distributed (multi-node or multi-gpu) settings, it's nice to be able to
-  load only part of the tensors on the various models. For
-  [BLOOM](https://huggingface.co/bigscience/bloom) using this format enabled
-  to load the model on 8 GPUs from 10mn with regular PyTorch weights down to 45s.
-  This really speeds up feedbacks loops when developing on the model. For instance
-  you don't have to have separate copies of the weights when changing the distribution
-  strategy (for instance Pipeline Parallelism vs Tensor Parallelism).
+感谢您访问 GALAXY - ALIEN 项目，期待与您在科技的最前沿共同探索未来！ 👽
 
 License: Apache-2.0
